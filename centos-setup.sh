@@ -182,6 +182,20 @@ EOF
 }
 
 
+#
+# Nginx
+#
+installNginx() {
+    yum install nginx -y
+
+    systemctl start nginx
+    systemctl enable nginx
+
+    sudo firewall-cmd --permanent --zone=public --add-service=https --add-service=http
+    sudo firewall-cmd --reload
+}
+
+
 
 yum update -y
 yum upgrade -y
@@ -207,3 +221,7 @@ if [ "$v2ray" != "${v2ray#[Yy]}" ] ;then
     installV2Ray
 fi
 
+read -p "Shall I Install Nginx (y/n)? " nginx
+if [ "$nginx" != "${nginx#[Yy]}" ] ;then
+    installNginx
+fi
